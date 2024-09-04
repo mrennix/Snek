@@ -157,6 +157,7 @@ void Game::ComposeFrame()
 		brd.DrawBorder();
 		snake.Draw(brd);
 		goal.Draw(brd);
+		gfx.DrawCircle(200, 200, 10, Colors::Magenta);
 		for (const auto& enemy : enemies)
 		{
 			enemy.Draw(brd);
