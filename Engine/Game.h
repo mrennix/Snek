@@ -29,6 +29,7 @@
 #include "Snake.h"
 #include "Goal.h"
 #include "Enemy.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -49,6 +50,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	FrameTimer ft;
 	Board brd;
 	std::mt19937 rng;
 	Snake snake;
