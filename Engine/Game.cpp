@@ -61,41 +61,37 @@ void Game::UpdateModel()
 		{
 			if (wnd.kbd.KeyIsPressed(VK_UP))
 			{
-				// Prevent snake from moving in the opposite direction into itself!
-				if (prev_delta_loc != delta_loc_down)
+				if (prev_delta_loc != delta_loc_down) // Prevent snake from moving in the opposite direction into itself!
 				{
 					delta_loc = delta_loc_up;
 				}
 			}
 			else if (wnd.kbd.KeyIsPressed(VK_DOWN))
 			{
-				// Prevent snake from moving in the opposite direction into itself!
-				if (prev_delta_loc != delta_loc_up)
+				if (prev_delta_loc != delta_loc_up)  // Prevent snake from moving in the opposite direction into itself!
 				{
 					delta_loc = delta_loc_down;
 				}
 			}
-			else if (wnd.kbd.KeyIsPressed(VK_LEFT))
+			else if (wnd.kbd.KeyIsPressed(VK_LEFT))  
 			{
-				// Prevent snake from moving in the opposite direction into itself!
-				if (prev_delta_loc != delta_loc_right)
+				if (prev_delta_loc != delta_loc_right)  // Prevent snake from moving in the opposite direction into itself!
 				{
 					delta_loc = delta_loc_left;
 				}
 			}
 			else if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 			{
-				// Prevent snake from moving in the opposite direction into itself!
-				if (prev_delta_loc != delta_loc_left)
+				if (prev_delta_loc != delta_loc_left)  // Prevent snake from moving in the opposite direction into itself!
 				{
 					delta_loc = delta_loc_right;
 				}
 			}
 			prev_delta_loc = delta_loc;
-			++snakeMoveCounter;
+			snakeMoveCounter += dt;
 			if (snakeMoveCounter >= snakeMovePeriod)
 			{
-				snakeMoveCounter = 0;
+				snakeMoveCounter -= snakeMovePeriod;
 				const Location next = snake.GetNextHeadLocation(delta_loc);
 				// Collision detection
 				if (!brd.inInsideBoard(next) || snake.isInTileExceptEnd(next))
@@ -126,15 +122,17 @@ void Game::UpdateModel()
 							if (++enemyAppearCounter >= enemyAppearPeriod)
 							{
 								enemyAppearCounter = 0;
-								enemies.emplace_back(Enemy(rng, brd, snake, enemies));
+								enemies.emplace_back(Enemy(rng, brd, snake, enemies)); // Spawn a random rock
 							}
 							goal.Respawn(rng, brd, snake, enemies);
 							
-							if (++snakeSpeedCounter >= snakeSpeedPeriod)
-							{
-								snakeSpeedCounter = 0;
-								snakeMovePeriod--; // Inrease snake speed!
-							}
+							//if (++snakeSpeedCounter >= snakeSpeedPeriod)
+							//{
+							//	snakeSpeedCounter = 0;
+							//	snakeMovePeriod--; // Inrease snake speed!
+							//}
+							snakeMovePeriod = std::max(snakeMovePeriod - dt * snakeSpeedUpFactor, snakeMovePeriodMin);
+							//snakeMovePeriod = snakeMovePeriod - dt * snakeSpeedUpFactor;
 
 						}
 					}
@@ -159,7 +157,7 @@ void Game::ComposeFrame()
 		brd.DrawBorder();
 		snake.Draw(brd);
 		goal.Draw(brd);
-		gfx.DrawCircle(200, 200, 10, Colors::Magenta);
+		// gfx.DrawCircle(200, 200, 10, Colors::Magenta);
 		for (const auto& enemy : enemies)
 		{
 			enemy.Draw(brd);

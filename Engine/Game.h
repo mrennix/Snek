@@ -63,12 +63,13 @@ private:
 	Location prev_delta_loc = { 0, 0 };
 	Goal goal;
 	
-	int snakeMovePeriod = 14;
-	int snakeMoveCounter = 0;
-	int snakeSpeedCounter = 0;
+	static constexpr float snakeMovePeriodMin = 0.01f;  // A lower bound on snake speed...um actually not sure
+	float snakeMovePeriod = 0.2f;   // Decrease to make snake start quicker
+	float snakeMoveCounter = 0.0f;
+	//float snakeSpeedCounter = 0;
 	int enemyAppearCounter = 0;
-	static constexpr int enemyAppearPeriod = 2;
-	static constexpr int snakeSpeedPeriod = 10;
+	static constexpr int enemyAppearPeriod = 3; // number of treats to eat before a new rock is spawned
+	static constexpr float snakeSpeedUpFactor = 0.12f; // Increase to make snake speed up quicker after eating a treat
 	bool gameIsOver = false;
 	bool gameIsStarted = false;
 	std::wstring gameOverTitle = L"Snek - The Game!";
